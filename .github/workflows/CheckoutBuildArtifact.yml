@@ -1,13 +1,9 @@
-name: Secure with multiple separate jobs
+name: Checkout | Build | Artifact
 
 # Controls when the workflow will run
 on:
   workflow_dispatch:
-  schedule:
-    # Runs "Every Sunday" (see https://crontab.guru)
-    - cron: '5 8 * * Sun'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Build:
     runs-on: [ubuntu-latest]
@@ -21,11 +17,20 @@ jobs:
       - name: Build with Maven
         working-directory: ./app/
         run: mvn clean install
-
-      - name: Get the Java API wrapper
-        uses: wei/curl@master
+        
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
         with:
-         args: -sS -o VeracodeJavaAPI.jar "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.6.5.8/vosp-api-wrappers-java-19.6.5.8.jar"
+        # Artifact name
+          name: AppArtifact
+          path: app/target/verademo.war 
+      
+#  Security Governance Scan
+#      - name: Get the Java API wrapper
+#        uses: wei/curl@master
+#        with:
+#         args: -sS -o VeracodeJavaAPI.jar "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.6.5.8/vosp-api-wrappers-java-19.6.5.8.jar"
 
-      - name: Start SAST / SCA scan
-        run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemoJava -createprofile true -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./app/target/verademo.war
+#      - name: Start SAST / SCA scan
+#        run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemoJava -createprofile true -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./app/target/verademo.war
+
