@@ -1,0 +1,17 @@
+name: Security Scan
+
+  workflow_dispatch:
+
+jobs:
+  SecurityScan:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Get Veracode
+      uses: wei/curl@master
+      with:
+        args: -sS -o VeracodeJavaAPI.jar "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.6.5.8/vosp-api-wrappers-java-19.6.5.8.jar"
+
+    - name: Start SAST scan
+      run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemo -createprofile false sandboxname -Development Sandbox -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./artifact/VeraDemo.war
