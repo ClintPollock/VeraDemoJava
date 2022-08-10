@@ -21,38 +21,4 @@ jobs:
         with:
         # Artifact name
           name: AppArtifact
-          path: app/target/verademo.war 
-      
-#  Security Governance Scan
-#      - name: Get Veracode
-#        uses: wei/curl@master
-#        with:
-#         args: -sS -o VeracodeJavaAPI.jar "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.6.5.8/vosp-api-wrappers-java-19.6.5.8.jar"
-
-#      - name: Start SAST / SCA scan
-#        run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemoJava -createprofile true -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./app/target/verademo.war
-
-# 
-      - name: Run Veracode Pipeline SAST
-        run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --file "./app/target/verademo.war" -so true --project_url https://www.github.com/$GITHUB_REPOSITORY -p $GITHUB_REPOSITORY -r $GITHUB_REF
-        continue-on-error: true
-      
-      - name: Run Veracode SCA   
-        run: curl -sSL https://download.sourceclear.com/install | sh
-        
-      - name: Run Veracode SCA
-        run: la -la
-      
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-        # Artifact name
-          name: SCA Findings
-          path: sca.txt
-         
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-        # Artifact name
-          name: SAST Findings
-          path: results.json
+          path: app/target/verademo.war
