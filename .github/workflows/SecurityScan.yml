@@ -14,8 +14,15 @@ jobs:
       with:
         args: -sS -o VeracodeJavaAPI.jar "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/19.6.5.8/vosp-api-wrappers-java-19.6.5.8.jar"
 
-    - name: Start Static and SCA Comliance scan
+    - name: Start Static and SCA Compliance scan
       run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemoJava -createprofile false -sandboxname "Development Sandbox" -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./artifact/VeraDemo.war
 
-    - name: Start SCA Container scan
+    - name: SCA Scan
+      env: 
+        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan
+      
+    - name: SCA Container Scan
+      env: 
+        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
       run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan --image antfie/verademo
