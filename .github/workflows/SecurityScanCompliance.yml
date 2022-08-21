@@ -25,7 +25,7 @@ jobs:
     - name: SCA Advanced Scan of Application  / Pipeline Output
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan
+      run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan app
       
     - name: SCA Container Scan / Pipeline Output
       env: 
