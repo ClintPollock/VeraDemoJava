@@ -2,7 +2,11 @@ name: Security Scan (Compliance Bucket)
 
 on:
   workflow_dispatch:
-
+  push:
+    branches: [ master, release/* ]
+  pull_request:
+    branches: [ master, develop, main, release/* ]
+    
 jobs:
   SecurityScanComplianceBucket:
     runs-on: [ubuntu-latest]
@@ -18,12 +22,12 @@ jobs:
       continue-on-error: true
       run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname Github-VeraDemoJava -createprofile false -sandboxname "Development Sandbox" -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./artifact/VeraDemo.war
 
-    - name: SCA Scan Application
+    - name: SCA Advanced Scan of Application  / Pipeline Output
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
       run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan
       
-    - name: SCA Container Scan
+    - name: SCA Container Scan / Pipeline Output
       env: 
         SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
       run: curl -sSL https://download.sourceclear.com/ci.sh | sh -s scan --image clintpollock/verademo-java:latest
