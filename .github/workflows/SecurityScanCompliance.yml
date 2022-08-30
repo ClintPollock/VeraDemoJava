@@ -20,7 +20,7 @@ jobs:
 
     - name: Start Static and SCA Compliance scan
       continue-on-error: true
-      run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname "My App" -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./artifact/VeraDemo.war
+      run: java -jar VeracodeJavaAPI.jar -action uploadandscan -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -appname "My App" -createprofile false -version "GitHub Actions job $GITHUB_RUN_NUMBER" -filepath ./artifact/VeraDemo.war
 
     - name: SCA Advanced Scan of Application  / Pipeline Output
       env: 
