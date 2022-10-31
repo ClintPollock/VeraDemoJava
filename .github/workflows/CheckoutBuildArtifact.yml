@@ -19,10 +19,10 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
         # Artifact name
-          name: AppArtifact
+          name: verademo.war
           path: app/target/verademo.war
 
-  Security_Scan_SAST_SCA:
+  security_scan_SAST_SCA:
     runs-on: ubuntu-latest
     needs: Build
     steps:
