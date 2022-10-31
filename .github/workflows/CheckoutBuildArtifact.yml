@@ -65,5 +65,5 @@ jobs:
       - name: import flaws as issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'policy_flaws.json'
+          scan-results-json: 'tmp/policy_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}        
