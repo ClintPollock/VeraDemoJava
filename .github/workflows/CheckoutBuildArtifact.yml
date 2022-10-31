@@ -22,7 +22,7 @@ jobs:
           name: verademo.war
           path: app/target/verademo.war
 
-  security_scan_SAST_SCA:
+  security_scan_sast_sca:
     runs-on: ubuntu-latest
     needs: Build
     steps:
@@ -45,9 +45,9 @@ jobs:
           vkey: '${{ secrets.VERACODE_API_KEY }}'
         continue-on-error: true
         
-  import-flaws:
+  import-issues:
     runs-on: ubuntu-latest
-    needs: Security_Scan_SAST_SCA
+    needs: security_scan_sast_sca
     container: 
       image: veracode/api-signing:latest
     steps:
