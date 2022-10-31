@@ -66,4 +66,4 @@ jobs:
         uses: veracode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: 'policy_flaws.json'
-          github-token: ${{ secrets.GITHUB_TOKEN }}        
+          github-token: ${{ secrets.GH_TOKEN }}        
