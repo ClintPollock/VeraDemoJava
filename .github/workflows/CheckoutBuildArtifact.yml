@@ -61,15 +61,9 @@ jobs:
           total_flaws=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True" | jq -r '.page.total_elements')
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
-
-      - name: save results file
-        uses: actions/upload-artifact@v2
-        with:
-          name: policy-flaws
-          path: /tmp/policy_flaws.json
           
       - name: import flaws as issues
         uses: veracode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'tmp/policy_flaws.json'
+          scan-results-json: '/tmp/policy_flaws.json'
           github-token: ${{ secrets.GH_TOKEN }}        
